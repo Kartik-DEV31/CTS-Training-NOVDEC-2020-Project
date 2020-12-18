@@ -1,0 +1,21 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Restaurant Registration</title>
+</head>
+<body>
+
+<form action="addRestaurant" method="post">  
+<input type="text" name="owner" value="Owners Name..."/><br/>  
+<input type="text" name="restaurant_name"  value="Restaurant Name..." /><br/>  
+<input type="text" name="type"  value="Food Served..."/><br/>  
+<input type="number" name="emplpoyees"  value="Employee Count..." /><br/>  
+<input type="number" name="revenue"  value="Revenue per month..."/><br/>  
+<input type="submit" value="register"/>  
+</form>  
+
+</body>
+</html>

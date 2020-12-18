@@ -1,0 +1,5 @@
+package managmentApplication.RestaurantChainManagmentApplication;
+
+public interface SpecificRestaurantRepository {
+
+}

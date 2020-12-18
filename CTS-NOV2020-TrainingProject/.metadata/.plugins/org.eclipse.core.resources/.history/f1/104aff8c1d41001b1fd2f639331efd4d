@@ -1,0 +1,30 @@
+package managmentApplication.RestaurantChainManagmentApplication;
+
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.servlet.ModelAndView;
+
+import managmentApplication.applicationModel.RestaurantDetails;
+
+@Repository
+public interface RestaurantRepository extends JpaRepository<RestaurantDetails,Integer> {
+
+	@Modifying
+	@Query("UPDATE RestaurantDetails s SET s.restaurantOwner = ?1 WHERE s.restaurantOwner = ?2 and s.id=?3 ")
+	void updateOwnerName(String ownerName, String oldOwnerName ,Integer id);
+
+	@Query("select s.restaurantOwner from RestaurantDetails s WHERE s.id = ?1 and s.password=?2 ")
+	Optional<RestaurantDetails> authenticateTheUser(Integer id, String password);
+
+	@Query("select s from RestaurantDetails s WHERE s.id = ?1 and s.specificRestaurantDetails.restaurantName=?2 ")
+	Optional<RestaurantDetails> findRestaurantByIdandName(Integer ownerId, String restaurantName);
+
+
+		
+
+}

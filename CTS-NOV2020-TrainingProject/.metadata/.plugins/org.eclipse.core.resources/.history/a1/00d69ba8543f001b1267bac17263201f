@@ -1,0 +1,7 @@
+package com.ManagmentApplication.RestaurantChainManagmentApplication;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface RestaurantChainManagmentRepository extends JpaRepository<RestaurantDetails,Integer> {
+
+}

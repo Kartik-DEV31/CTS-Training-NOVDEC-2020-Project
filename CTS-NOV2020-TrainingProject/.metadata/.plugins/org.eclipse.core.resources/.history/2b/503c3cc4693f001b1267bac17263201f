@@ -1,0 +1,10 @@
+server.port=1947
+
+spring.mvc.view.prefix=/WEB-INF/jspPages/
+spring.mvc.view.suffix=.jsp
+
+spring.datasource.url=jdbc:mysql://localhost:3306/managmentapplication
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.username=root
+spring.datasource.password=admin
+

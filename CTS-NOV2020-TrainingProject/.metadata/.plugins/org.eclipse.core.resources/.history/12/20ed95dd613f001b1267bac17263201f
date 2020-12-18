@@ -1,0 +1,25 @@
+package managmentApplication.applicationService;
+
+import java.util.List;
+import java.util.Optional;
+
+import managmentApplication.applicationModel.RestaurantDetails;
+
+
+public interface RestaurantDetailsManagingOperations {
+
+void addRestaurant();
+	
+	List<RestaurantDetails> getAllRestaurants();
+	
+	void updateRestaurant();
+	
+	void deleteRestaurant();
+	
+	Optional<RestaurantDetails> getRestaurant();
+	
+	
+	
+	
+	
+}

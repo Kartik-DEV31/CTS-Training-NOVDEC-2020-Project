@@ -1,0 +1,25 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+
+	<form action="addRestaurant" method="post">
+		<input type="text" name="id" placeholder="Select an Id..." /><br /> <input
+			type="text" name="restaurantName" placeholder="Owners Name..." /><br />
+		<input type="text" name="foodServed" placeholder="foodServed..." /><br />
+		<input type="text" name="employeeCount" placeholder="employeeCount..." /><br />
+		<input type="text" name="revenue" placeholder="revenue..." /><br /> <input
+			type="submit" value="register" />
+	</form>
+
+
+
+</body>
+</html>

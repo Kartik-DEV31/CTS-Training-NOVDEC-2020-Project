@@ -1,0 +1,32 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <%@ taglib  uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<html>
+<body>
+	<h2>All Restaurants Available</h2>
+
+
+	<table border="1">
+
+		<th>Owner</th>
+		<th>Restaurant</th>
+		<th>Food Served</th>
+		<th>Employees Working</th>
+		<th>Revenue Generated</th>
+
+		<c:forEach var="data" items="${data}" varStatus="status">
+			<tr>
+				<td>${data.restaurantOwner}</td>	
+				<td>${data.restaurantName}</td>
+				<td>${data.restaurantType}</td>
+				<td>${data.employeeCount}</td>
+				<td>${data.revenue}</td>
+
+			</tr>
+		</c:forEach>
+	</table>
+	
+	
+	
+</body>
+</html>

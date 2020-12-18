@@ -1,0 +1,42 @@
+package managmentApplication.applicationService;
+
+import java.util.List;
+import java.util.Optional;
+
+import managmentApplication.applicationModel.RestaurantDetails;
+
+
+public interface RestaurantDetailsManagingOperations {
+
+
+	
+	List<RestaurantDetails> getAllRestaurants() throws Exception;
+	
+
+	void deleteRestaurant(Integer ownerId) throws Exception;
+	
+	Optional<RestaurantDetails> getRestaurant(Integer ownerId);
+
+	
+
+
+	void addOwner(Integer id, String restaurantOwner, String password) throws Exception;
+
+
+
+	void addRestaurant(Integer ownerId, String restaurantName, String foodServed, Integer employeeCount, Double revenue)
+			throws Exception;
+
+
+
+	void updateRestaurantOwnerName(String newOwnername, String oldOwnerName, Integer ownerId);
+
+
+
+	void authenticate(Integer id, String password);
+	
+	
+	
+	
+	
+}

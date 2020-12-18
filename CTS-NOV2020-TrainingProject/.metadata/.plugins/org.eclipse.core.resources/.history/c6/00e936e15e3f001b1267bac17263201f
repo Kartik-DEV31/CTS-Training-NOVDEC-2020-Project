@@ -1,0 +1,23 @@
+package applicationController;
+
+import java.util.List;
+import java.util.Optional;
+
+import applicationModel.RestaurantDetails;
+import applicationModel.restaurantdetails;
+
+public interface RestaurantController {
+
+	void addRestaurant();
+	
+	List<restaurantdetails> getAllRestaurants();
+	
+	void updateRestaurant();
+	
+	void deleteRestaurant();
+	
+	Optional<RestaurantDetails> getRestaurant();
+	
+	
+	
+}

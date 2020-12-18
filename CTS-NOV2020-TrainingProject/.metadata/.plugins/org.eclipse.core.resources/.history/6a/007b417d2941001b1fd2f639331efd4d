@@ -1,0 +1,36 @@
+package managmentApplication.RestaurantChainManagmentApplication;
+
+
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+import managmentApplication.applicationModel.RestaurantDetails;
+import managmentApplication.applicationModel.SpecificRestaurantDetails;
+
+public interface SpecificRestaurantRepository extends JpaRepository<SpecificRestaurantDetails, Integer> {
+
+	
+	@Modifying
+	@Query("delete from SpecificRestaurantDetails s where s.id= ?1")
+	void deleteOwner(Integer ownerId);
+
+	@Modifying
+	@Query("UPDATE SpecificRestaurantDetails s SET s.revenue = ?3 WHERE s.restaurantName = ?2 and s.id=?1 ")
+	int updateRevenue(Integer ownerId, String restaurantName, Double updatedRev);
+	
+	@Modifying
+	@Query("UPDATE SpecificRestaurantDetails s SET s.employeeCount = ?3 WHERE s.restaurantName = ?2 and s.id=?1 ")
+	int updateEmployeeCount(Integer ownerId, String restaurantName, Integer updatedCount);
+
+	@Query("select s from SpecificRestaurantDetails s WHERE s.id = ?1 and  s.restaurantName=?2 ")
+	Optional<SpecificRestaurantDetails> findRestaurantByIdandName(Integer ownerId, String restaurantName);
+	
+	@Query("select s from SpecificRestaurantDetails s WHERE s.id = ?1")
+	List<SpecificRestaurantDetails> findByOwnerId(Integer ownerId);
+
+}

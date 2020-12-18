@@ -1,0 +1,69 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+	
+	 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    
+    <link href="<c:url value="/css/restaurantRegistration.css" />" rel="stylesheet">
+   
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+
+	<form action="addRestaurant" method="post">
+		<input type="text" name="id" placeholder="Select an Id..." /><br />
+		<input
+			type="text" name="restaurantName" placeholder="Restaurant Name..." /><br />
+		<input type="text" name="foodServed" placeholder="foodServed..." /><br />
+		<input type="text" name="employeeCount" placeholder="employeeCount..." /><br />
+		<input type="text" name="revenue" placeholder="revenue..." /><br />
+		<input
+			type="submit" value="register" />
+	</form>
+
+
+
+
+<div class="user">
+<form  id="homepage" action="/managmentApplication/">
+  <button class="homeButton" type="submit" onclick="/">Home</button>
+</form>
+    <header class="user__header">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3219/logo.svg" alt="" />
+    </header>
+    
+    <form class="form" action="addRestaurant" method="post">
+        <div class="form__group">
+        <input type="text" name="id" placeholder="Enter the registered Id..." class="form__input" /><br />
+        </div>
+        
+        <div class="form__group">
+            <input type="text" name="owner" placeholder="Owner's Name..." class="form__input" />
+        </div>
+        
+        <div class="form__group">
+            <input type="password" name="password" placeholder="Password" class="form__input" />
+        </div>
+        
+        <button class="btn" type="submit">Register</button>
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

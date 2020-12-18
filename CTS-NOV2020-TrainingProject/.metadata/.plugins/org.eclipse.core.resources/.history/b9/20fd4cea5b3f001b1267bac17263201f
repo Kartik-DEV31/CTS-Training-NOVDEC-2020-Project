@@ -1,0 +1,14 @@
+create IF NOT EXISTS database managmentapplication;
+
+drop IF EXISTS restaurantdetails;
+
+CREATE TABLE IF NOT EXISTS restaurantdetails(
+
+id INTEGER primary key auto_increment,
+username VARCHAR(64) NOT NULL,
+restaurantname VARCHAR(64) NOT NULL,
+restauranttype VARCHAR(64) NOT NULL,
+employeecount INTEGER NOT NULL,
+revenue DOUBLE NOT NULL
+
+);

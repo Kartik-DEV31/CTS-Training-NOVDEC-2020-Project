@@ -1,0 +1,18 @@
+package managmentApplication.RestaurantChainManagmentApplication;
+
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+import managmentApplication.applicationModel.SpecificRestaurantDetails;
+
+public interface SpecificRestaurantRepository extends JpaRepository<SpecificRestaurantDetails, Integer> {
+
+	
+	@Modifying
+	@Query("delete from SpecificRestaurantDetails s where s.id= ?1")
+	void deleteOwner(Integer ownerId);
+
+}

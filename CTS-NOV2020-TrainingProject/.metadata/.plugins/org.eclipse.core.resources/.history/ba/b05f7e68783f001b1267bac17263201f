@@ -1,0 +1,5 @@
+package managmentApplication.applicationModel;
+
+public class SpecificRestaurantDetails {
+
+}

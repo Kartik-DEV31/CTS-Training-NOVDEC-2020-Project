@@ -1,0 +1,59 @@
+package managmentApplication.applicationService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import managmentApplication.RestaurantChainManagmentApplication.RestaurantRepository;
+import managmentApplication.applicationModel.RestaurantDetails;
+
+@Service
+public class RestaurantDetailsManagingOperationsImpl implements RestaurantDetailsManagingOperations {
+@Autowired
+RestaurantRepository repo;
+	
+	
+	@Override
+	public void addRestaurant(String restaurantOwner, String restaurantName, String restaurantType,
+			Integer employeeCount, Double revenue) {
+		RestaurantDetails e = new RestaurantDetails( restaurantOwner, restaurantName, restaurantType, employeeCount,  revenue);
+		
+		List<RestaurantDetails> data = new ArrayList<RestaurantDetails>();
+		data.add(e);
+		repo.saveAll(data);
+		
+		
+	}
+
+	@Override
+	public List<RestaurantDetails> getAllRestaurants() throws Exception {
+		
+		if(repo.findAll().isEmpty())
+			throw new Exception("TableEmptyException");
+		
+		else
+		return repo.findAll() ;
+	}
+
+	@Override
+	public void updateRestaurant() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteRestaurant() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Optional<RestaurantDetails> getRestaurant() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

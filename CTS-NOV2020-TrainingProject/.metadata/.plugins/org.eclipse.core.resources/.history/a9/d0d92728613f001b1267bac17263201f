@@ -1,0 +1,5 @@
+package managmentApplication.applicationService;
+
+public class RestaurantDetailsManagingOperationsImpl implements RestaurantDetailsManagingOperations {
+
+}

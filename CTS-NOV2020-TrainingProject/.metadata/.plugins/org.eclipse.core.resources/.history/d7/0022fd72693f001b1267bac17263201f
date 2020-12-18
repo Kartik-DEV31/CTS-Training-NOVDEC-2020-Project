@@ -1,0 +1,23 @@
+package managmentApplication.applicationController;
+
+import java.util.Optional;
+
+import org.springframework.ui.Model;
+
+import managmentApplication.applicationModel.RestaurantDetails;
+
+public interface RestaurantController {
+
+	void addRestaurant();
+	
+	String getAllRestaurants(Model m);
+	
+	void updateRestaurant();
+	
+	void deleteRestaurant();
+	
+	Optional<RestaurantDetails> getRestaurant();
+	
+	
+	
+}

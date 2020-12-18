@@ -1,0 +1,66 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<html>
+<body>
+	<h2>All Restaurants Available</h2>
+
+
+	<table border="1">
+
+		<th>Id</th>
+		<th>Owner</th>
+		<th>password</th>
+		<th>Restaurant</th>
+		<th>Food Served</th>
+		<th>Employees Working</th>
+		<th>Revenue Generated(Monthly)</th>
+
+		<c:forEach var="data" items="${data}" varStatus="status">
+			<tr>
+				<td>${data.id}</td>
+				<td>${data.restaurantOwner}</td>
+
+				<td>${data.password}</td>
+				<td><c:forEach var="data2"
+						items="${data.specificRestaurantDetails}" varStatus="status">
+						
+						${data2.restaurantName}<br>
+						<br>
+
+					</c:forEach></td>
+
+				<td><c:forEach var="data2"
+						items="${data.specificRestaurantDetails}" varStatus="status">
+						
+						${data2.restaurantType}<br>
+						<br>
+
+					</c:forEach></td>
+
+				<td><c:forEach var="data2"
+						items="${data.specificRestaurantDetails}" varStatus="status">
+						
+						${data2.employeeCount}<br>
+						<br>
+
+					</c:forEach></td>
+
+
+				<td><c:forEach var="data2"
+						items="${data.specificRestaurantDetails}" varStatus="status">
+						
+						${data2.revenue}<br>
+						<br>
+
+					</c:forEach></td>
+
+
+			</tr>
+		</c:forEach>
+	</table>
+
+
+
+</body>
+</html>

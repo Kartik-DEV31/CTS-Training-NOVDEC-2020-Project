@@ -1,0 +1,34 @@
+package managmentApplication.applicationController;
+
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.servlet.ModelAndView;
+
+import managmentApplication.applicationModel.RestaurantDetails;
+
+public interface RestaurantController {
+
+	ModelAndView getAllRestaurants(Model m);
+
+
+	ModelAndView addOwner(ModelMap model, HttpServletRequest request);
+
+	ModelAndView addRestaurant(ModelMap model, HttpServletRequest request);
+
+	ModelAndView deleteRestaurant(Model model, HttpServletRequest request);
+
+	ModelAndView updateRestaurantOwnerName(Model model, HttpServletRequest request);
+	
+
+	Optional<RestaurantDetails> Authentication(HttpServletRequest request);
+
+
+
+	Optional<RestaurantDetails> getRestaurant(Integer ownerId);
+	
+
+}

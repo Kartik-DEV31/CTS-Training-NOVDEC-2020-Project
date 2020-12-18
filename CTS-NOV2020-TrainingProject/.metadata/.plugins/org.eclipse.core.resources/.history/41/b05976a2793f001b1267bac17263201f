@@ -1,0 +1,127 @@
+package managmentApplication.applicationModel;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "specificrestaurantdetails")
+public class SpecificRestaurantDetails {
+
+	
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@Column(name = "username")
+	private String restaurantOwner;
+	
+	@Id
+	@Column(name ="restaurantname" )
+	private String restaurantName;
+	
+	@Column(name="restauranttype")
+	private String restaurantType;
+	
+	@Column(name="employeecount")
+	private Integer employeeCount;
+	
+	@Column(name="revenue")
+	private Double revenue;
+
+	
+	
+	
+	public SpecificRestaurantDetails(){
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public SpecificRestaurantDetails(Integer id, String restaurantOwner, String restaurantName, String restaurantType,
+			Integer employeeCount, Double revenue) {
+		super();
+		this.id = id;
+		this.restaurantOwner = restaurantOwner;
+		this.restaurantName = restaurantName;
+		this.restaurantType = restaurantType;
+		this.employeeCount = employeeCount;
+		this.revenue = revenue;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getRestaurantOwner() {
+		return restaurantOwner;
+	}
+
+	public void setRestaurantOwner(String restaurantOwner) {
+		this.restaurantOwner = restaurantOwner;
+	}
+
+	public String getRestaurantName() {
+		return restaurantName;
+	}
+
+	public void setRestaurantName(String restaurantName) {
+		this.restaurantName = restaurantName;
+	}
+
+	public String getRestaurantType() {
+		return restaurantType;
+	}
+
+	public void setRestaurantType(String restaurantType) {
+		this.restaurantType = restaurantType;
+	}
+
+	public Integer getEmployeeCount() {
+		return employeeCount;
+	}
+
+	public void setEmployeeCount(Integer employeeCount) {
+		this.employeeCount = employeeCount;
+	}
+
+	public Double getRevenue() {
+		return revenue;
+	}
+
+	public void setRevenue(Double revenue) {
+		this.revenue = revenue;
+	}
+	
+	@ManyToOne
+	@JoinColumn(name="id" ,nullable = false)
+	private RestaurantDetails details;
+
+
+
+
+	public RestaurantDetails getDetails() {
+		return details;
+	}
+
+	public void setDetails(RestaurantDetails details) {
+		this.details = details;
+	}
+	
+	
+	
+	
+	
+	
+
+	
+	
+}

@@ -1,0 +1,3 @@
+INSERT into restaurantdetails
+(username ,restaurantname ,restauranttype,employeecount,revenue )
+VALUES ("kartik","HappyStomach","Veg","15",100000.0);

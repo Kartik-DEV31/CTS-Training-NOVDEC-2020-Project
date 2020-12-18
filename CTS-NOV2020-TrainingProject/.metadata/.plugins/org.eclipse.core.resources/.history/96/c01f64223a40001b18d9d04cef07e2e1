@@ -1,0 +1,20 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <link href="<c:url value="/css/ownerRegistration.css" />" rel="stylesheet">
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Restaurant Registration</title>
+</head>
+<body>
+
+<form action="addOwner" method="post">  
+<input type="text" name="id" placeholder="Select an Id..."/><br/>  
+<input type="text" name="owner" placeholder="Owners Name..."/><br/>  
+<input type="text" name="password"  placeholder="password..." /><br/>  
+<input type="submit" value="register"/>  
+</form>  
+
+</body>
+</html>

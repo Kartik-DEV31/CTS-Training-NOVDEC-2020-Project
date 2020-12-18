@@ -1,0 +1,13 @@
+package com.ManagmentApplication.RestaurantChainManagmentApplication;
+
+import java.util.List;
+
+public interface ManagmentController {
+
+	void addRestaurant();
+	
+	List<RestaurantDetails> getRestaurant();
+	
+	
+	
+}
