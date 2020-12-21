@@ -1,0 +1,289 @@
+package managmentApplication.applicationController;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+
+import managmentApplication.applicationModel.RestaurantDetails;
+import managmentApplication.applicationModel.SpecificRestaurantDetails;
+import managmentApplication.applicationService.RestaurantDetailsManagingOperations;
+
+@RestController
+public class RestaurantControllerImpl implements RestaurantController {
+
+	@Autowired
+	RestaurantDetailsManagingOperations operations;
+
+	@GetMapping(value = "/")
+	public ModelAndView home() {
+		ModelAndView mav = new ModelAndView("/login");
+		return mav;
+	}
+
+	@GetMapping(value = "/redirectToRegisterOwnerJsp")
+	public ModelAndView redirectToRegisterOwnerJsp() {
+		ModelAndView mav = new ModelAndView("/registerOwner");
+		return mav;
+	}
+
+	@GetMapping(value = "/redirectToRegisterRestaurantJsp")
+	public ModelAndView redirectToRegisterRestaurantJsp() {
+
+		ModelAndView mav = new ModelAndView("/registerRestaurant");
+		return mav;
+	}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@Override
+	@PostMapping(value = "/addOwner")
+	public ModelAndView addOwner(ModelMap model, HttpServletRequest request) {
+
+		String id = request.getParameter("id");
+		String owner = request.getParameter("owner");
+		String password = request.getParameter("password");
+		Integer ownerId = Integer.parseInt(id);
+		try {
+			operations.addOwner(ownerId, owner, password);
+		} catch (Exception e) {
+
+			model.addAttribute("RegistrationException", "Owner Already Registered");
+			return redirectToRegisterOwnerJsp();
+		}
+		ModelAndView mav = new ModelAndView("/registerRestaurant");
+		return mav;
+	}
+
+	@Override
+	@PostMapping(value = "/addRestaurant")
+	public ModelAndView addRestaurant(ModelMap model, HttpServletRequest request) {
+		String id = request.getParameter("id");
+		String restaurantName = request.getParameter("restaurantName");
+		String foodServed = request.getParameter("foodServed");
+		String employeeCount = request.getParameter("employeeCount");
+		String revenue = request.getParameter("revenue");
+		Integer ownerId = Integer.parseInt(id);
+		Integer count = Integer.parseInt(employeeCount);
+		Double rev = Double.parseDouble(revenue);
+		try {
+			operations.addRestaurant(ownerId, restaurantName, foodServed, count, rev);
+		} catch (Exception e) {
+			System.out.println(e);
+			return redirectToRegisterOwnerJsp();
+		}
+		ModelAndView mav = new ModelAndView("/login");
+		return mav;
+	}
+
+	@Override
+	@RequestMapping(value = "/getAllRestaurants", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+	public ModelAndView getAllRestaurants(Model model) {
+		List<RestaurantDetails> result = new ArrayList<RestaurantDetails>();
+		try {
+			result = operations.getAllRestaurants();
+
+		} catch (Exception e) {
+			model.addAttribute("exceptionMsg", "No Restaurant found");
+		}
+
+		Collections.sort(result, (r1, r2) -> r2.getSpecificRestaurantDetails().get(0).getRevenue()
+				.compareTo(r1.getSpecificRestaurantDetails().get(0).getRevenue()));
+		model.addAttribute("data", result);
+		ModelAndView mav = new ModelAndView("/allRestaurantsData");
+		return mav;
+	}
+
+	@Override
+	@PostMapping(value = "/updateOwnerName")
+	public ModelAndView updateRestaurantOwnerName(Model model, HttpServletRequest request) {
+		String id = request.getParameter("id");
+		String oldOwnerName = request.getParameter("oldOwnerName");
+		String newOwnername = request.getParameter("ownerName");
+		Integer ownerId = Integer.parseInt(id);
+		operations.updateRestaurantOwnerName(newOwnername, oldOwnerName, ownerId);
+		return getAllRestaurants(model);
+
+	}
+
+	@Override
+	@PostMapping(value = "/deleteOwner")
+	public ModelAndView deleteRestaurant(Model model, HttpServletRequest request) {
+
+		Integer ownerId = Integer.parseInt(request.getParameter("user"));
+
+		try {
+			operations.deleteRestaurant(ownerId);
+		} catch (Exception e) {
+			System.out.println(e);
+			return home();
+		}
+		return getAllRestaurants(model);
+	}
+
+	@Override
+	public ModelAndView getRestaurant(Integer ownerId, Model model) {
+		Optional<RestaurantDetails> result = operations.getRestaurant(ownerId);
+
+		List<RestaurantDetails> rList = result.stream().collect(Collectors.toList());
+		model.addAttribute("data", rList);
+		ModelAndView mav = new ModelAndView("/RestaurantData");
+
+		return mav;
+
+	}
+
+	@Override
+	@PostMapping(value = "/authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ModelAndView Authentication(HttpServletRequest request, Model m) {
+
+		String id = request.getParameter("id");
+		String ownerName = request.getParameter("ownerName");
+		String password = request.getParameter("password");
+
+		Integer ownerId = Integer.parseInt(id);
+		try {
+
+			operations.authenticate(ownerId, password);
+		} catch (Exception e) {
+			return home();
+		}
+
+		return ownerDashboard(ownerId, m);
+
+	}
+
+	public ModelAndView ownerDashboard(Integer id, Model model ,String Name) {
+
+		String ownerid = Integer.toString(id);
+		model.addAttribute("id", ownerid);
+		model.addAttribute("ownerName", ownerName);
+		
+		return new ModelAndView("ownerDashboard");
+	}
+
+	@Override
+	@PostMapping(value = "/updateRevenue")
+	public ModelAndView updateRevenue(Model model, HttpServletRequest request) {
+
+		String id = request.getParameter("id");
+		String restaurantName = request.getParameter("restaurantName");
+		String updatedRevenue = request.getParameter("updatedRevenue");
+		Integer ownerId = Integer.parseInt(id);
+		Double updatedRev = Double.parseDouble(updatedRevenue);
+
+		try {
+			System.out.println("here");
+			operations.updateRevenue(ownerId, restaurantName, updatedRev);
+		} catch (Exception e) {
+			model.addAttribute("revenueException", "Resaturant does not exist");
+			return getRestaurant(ownerId, model);
+		}
+
+		Optional<SpecificRestaurantDetails> result = operations.findRestaurant(ownerId, restaurantName);
+
+		List<SpecificRestaurantDetails> rList = result.stream().collect(Collectors.toList());
+		model.addAttribute("data", rList);
+		model.addAttribute("id", id);
+		return new ModelAndView("ownerDashboard");
+
+	}
+
+	@Override
+	@PostMapping(value = "/updatedEmployeeCount")
+	public ModelAndView updateEmployeeCount(Model model, HttpServletRequest request) {
+
+		String id = request.getParameter("id");
+		String restaurantName = request.getParameter("restaurantName");
+		String updatedEmployeeCount = request.getParameter("updatedEmployeeCount");
+		Integer ownerId = Integer.parseInt(id);
+		Integer updatedCount = Integer.parseInt(updatedEmployeeCount);
+		try {
+			operations.updateEmployeeCount(ownerId, restaurantName, updatedCount);
+		} catch (Exception e) {
+			model.addAttribute("countException", "Resaturant does not exist");
+			return getRestaurant(ownerId, model);
+
+		}
+
+		Optional<SpecificRestaurantDetails> result = operations.findRestaurant(ownerId, restaurantName);
+
+		List<SpecificRestaurantDetails> rList = result.stream().collect(Collectors.toList());
+		model.addAttribute("data", rList);
+		model.addAttribute("id", id);
+		return new ModelAndView("ownerDashboard");
+
+	}
+
+	@Override
+	@PostMapping(value = "findRestaurantForOwner", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ModelAndView findRestaurant(Model model, HttpServletRequest request) {
+
+		String id = request.getParameter("id");
+		String restaurantName = request.getParameter("restaurantName");
+		Integer ownerId = Integer.parseInt(id);
+
+		Optional<SpecificRestaurantDetails> result = operations.findRestaurant(ownerId, restaurantName);
+
+		List<SpecificRestaurantDetails> rList = result.stream().collect(Collectors.toList());
+		model.addAttribute("data", rList);
+		model.addAttribute("id", id);
+		return new ModelAndView("ownerDashboard");
+
+	}
+
+	@PostMapping(value = "findAllRestaurantForOwner", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ModelAndView findAllRestaurantOfOwner(Model model, HttpServletRequest request) {
+
+		String id = request.getParameter("id");
+
+		Integer ownerId = Integer.parseInt(id);
+
+		List<SpecificRestaurantDetails> result = operations.findAllRestaurantOfOwner(ownerId);
+
+		List<SpecificRestaurantDetails> rList = result.stream().collect(Collectors.toList());
+		model.addAttribute("data", rList);
+		model.addAttribute("id", id);
+		return new ModelAndView("ownerDashboard");
+
+	}
+	
+	
+	@PostMapping(value = "totalEmployeesInResaturants",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ModelAndView totalEmployeesInResaturants(Model model, HttpServletRequest request) {
+		String id = request.getParameter("id");
+
+		Integer ownerId = Integer.parseInt(id);
+		Integer result = operations.totalEmployees(ownerId);
+	
+		
+		
+	
+		
+	
+	
+	String totalCount = Integer.toString(result);
+	model.addAttribute("id", id);
+	model.addAttribute("count", totalCount);
+	return new ModelAndView("ownerDashboard");
+	}
+	
+	
+	
+
+}

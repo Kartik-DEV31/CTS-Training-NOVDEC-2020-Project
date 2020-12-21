@@ -1,46 +1,59 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+	
+ 
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<!-- <link href="<c:url value="/css/restaurantRegistration.css" />"
-	rel="stylesheet"> -->
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>OwnerDashboard</title>
+<link href="<c:url value="/css/ownerDashboard.css" />" rel="stylesheet">
 </head>
 <body>
+<div id = "topBoard">
+Welcome ${ownerName}
+</div>
+<div id="homeButtonDiv">
+<form  id="homepage" action="/managmentApplication/">
+  <button class="homeButton" type="submit" >Home</button>
+</form>
+</div>
 
-	<form id="ownerDashboard" action="totalEmployeesInResaturants" method="post">
+<div id="leftBoard">
+
+	<form  action="totalEmployeesInResaturants" method="post">
 	<input
 			type="hidden" name="id" value="${id}" />
-		<button class="homeButton" type="submit">Total Employees</button>
+		<button id="totalEmployeeButton" type="submit">Total Employees</button>
 	</form>
 
-	<form id="ownerDashboard" action="findRestaurantForOwner" method="post">
-		<input type="text" name="restaurantName"
-			placeholder="Enter Restaurant Name..." /><br> 
+
+
+	<form id="searchRestaurant" action="findRestaurantForOwner" method="post">
+		<input type="text" name="restaurantName" id="search"
+			placeholder="Enter Restaurant Name..." size="21" /><br> 
 			
 			<input
 			type="hidden" name="id" value="${id}" />
 		<button class="searchButton" type="submit">Search</button>
 	</form>
 
-	<form id="ownerDashboard" action="findAllRestaurantForOwner" method="post">
-	<input
-			type="hidden" name="id" value="${id}" />
-		<button class="homeButton" type="submit">All the Restaurants</button>
+
+
+	<form  action="findAllRestaurantForOwner" method="post">
+	<input type="hidden" name="id" value="${id}" />
+		<button id="allrestaurants"  type="submit">All the Restaurants</button>
 	</form>
 
-	
 
+</div>	
 
 
 <c:if test="${not empty data}">
-		<div >
+		
 			<table class="container">
 
 				<thead>
@@ -75,23 +88,23 @@
 										</td>
 							<td>
 									<form action="updateRevenue" method="post">
-										<input type="text" name="restaurantName"
-											placeholder="Enter Restaurant Name..." /><br> <input
+										<input type="hidden" name="restaurantName"
+											value="${data.restaurantName}" /><br> <input
 											type="text" name="updatedRevenue"
 											placeholder="Enter Revenue..." /> <input type="hidden"
 											name="id" value="${data.id}" /><br> <input
-											type="submit" value="Update" /><br> <b>${revenueException}</b>
+											type="submit" value="Update" /><br> 
 
 									</form>
 								</td>
 							<td>
 									<form action="updatedEmployeeCount" method="post">
-										<input type="text" name="restaurantName"
-											placeholder="Enter Restaurant Name..." /><br> <input
+										<input type="hidden" name="restaurantName"
+											value="${data.restaurantName}" /><br><input
 											type="text" name="updatedEmployeeCount"
 											placeholder="Enter Employee Count ..." /><br> <input
 											type="hidden" name="id" value="${data.id}" /><br> <input
-											type="submit" name="update" value="Update" /><br> <b>${countException}</b>
+											type="submit" name="update" value="Update" /><br>
 									</form>
 								</td>
 							</tr>
@@ -99,12 +112,20 @@
 					</tr>
 				</tbody>
 			</table>
-		</div>
+		
 
 </c:if>
 
+
+<div id="totalEmployee">
 <c:if test="${not empty count}">
 <b>Total Employee Count : ${count}</b>
 </c:if>
+</div>
+<div id = "searchError">
+<c:if test="${not empty exception}">
+ <b>${exception}</b>
+ </c:if>
+</div>
 </body>
 </html>

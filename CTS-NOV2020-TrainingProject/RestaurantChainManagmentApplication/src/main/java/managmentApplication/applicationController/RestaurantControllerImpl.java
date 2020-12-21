@@ -30,18 +30,23 @@ public class RestaurantControllerImpl implements RestaurantController {
 	@Autowired
 	RestaurantDetailsManagingOperations operations;
 
+	String ownerName = null;
+
+	@Override
 	@GetMapping(value = "/")
 	public ModelAndView home() {
 		ModelAndView mav = new ModelAndView("/login");
 		return mav;
 	}
 
+	@Override
 	@GetMapping(value = "/redirectToRegisterOwnerJsp")
 	public ModelAndView redirectToRegisterOwnerJsp() {
 		ModelAndView mav = new ModelAndView("/registerOwner");
 		return mav;
 	}
 
+	@Override
 	@GetMapping(value = "/redirectToRegisterRestaurantJsp")
 	public ModelAndView redirectToRegisterRestaurantJsp() {
 
@@ -159,25 +164,28 @@ public class RestaurantControllerImpl implements RestaurantController {
 		Integer ownerId = Integer.parseInt(id);
 		try {
 
-			operations.authenticate(ownerId, password);
+			ownerName = operations.authenticate(ownerId, password).toUpperCase();
 		} catch (Exception e) {
 			return home();
 		}
 
-		return ownerDashboard(ownerId, m);
+		return ownerDashboard(ownerId, m, ownerName, null);
 
 	}
 
-	public ModelAndView ownerDashboard(Integer id, Model model) {
+	@Override
+	public ModelAndView ownerDashboard(Integer id, Model model, String ownerName, String Exception) {
 
 		String ownerid = Integer.toString(id);
 		model.addAttribute("id", ownerid);
+		model.addAttribute("ownerName", ownerName);
+		model.addAttribute("exception", Exception);
 		return new ModelAndView("ownerDashboard");
 	}
 
 	@Override
 	@PostMapping(value = "/updateRevenue")
-	public ModelAndView updateRevenue(Model model, HttpServletRequest request) {
+	public ModelAndView updateRevenue(Model model, HttpServletRequest request) throws Exception {
 
 		String id = request.getParameter("id");
 		String restaurantName = request.getParameter("restaurantName");
@@ -189,8 +197,9 @@ public class RestaurantControllerImpl implements RestaurantController {
 			System.out.println("here");
 			operations.updateRevenue(ownerId, restaurantName, updatedRev);
 		} catch (Exception e) {
-			model.addAttribute("revenueException", "Resaturant does not exist");
-			return getRestaurant(ownerId, model);
+			String revenueException = "Resaturant does not exist";
+
+			return ownerDashboard(ownerId, model, ownerName, revenueException);
 		}
 
 		Optional<SpecificRestaurantDetails> result = operations.findRestaurant(ownerId, restaurantName);
@@ -198,13 +207,14 @@ public class RestaurantControllerImpl implements RestaurantController {
 		List<SpecificRestaurantDetails> rList = result.stream().collect(Collectors.toList());
 		model.addAttribute("data", rList);
 		model.addAttribute("id", id);
-		return new ModelAndView("ownerDashboard");
+
+		return findAllRestaurantOfOwner(model, request);
 
 	}
 
 	@Override
 	@PostMapping(value = "/updatedEmployeeCount")
-	public ModelAndView updateEmployeeCount(Model model, HttpServletRequest request) {
+	public ModelAndView updateEmployeeCount(Model model, HttpServletRequest request) throws Exception {
 
 		String id = request.getParameter("id");
 		String restaurantName = request.getParameter("restaurantName");
@@ -214,8 +224,9 @@ public class RestaurantControllerImpl implements RestaurantController {
 		try {
 			operations.updateEmployeeCount(ownerId, restaurantName, updatedCount);
 		} catch (Exception e) {
-			model.addAttribute("countException", "Resaturant does not exist");
-			return getRestaurant(ownerId, model);
+			String countException = "Resaturant does not exist";
+
+			return ownerDashboard(ownerId, model, ownerName, countException);
 
 		}
 
@@ -224,7 +235,7 @@ public class RestaurantControllerImpl implements RestaurantController {
 		List<SpecificRestaurantDetails> rList = result.stream().collect(Collectors.toList());
 		model.addAttribute("data", rList);
 		model.addAttribute("id", id);
-		return new ModelAndView("ownerDashboard");
+		return findAllRestaurantOfOwner(model, request);
 
 	}
 
@@ -236,12 +247,21 @@ public class RestaurantControllerImpl implements RestaurantController {
 		String restaurantName = request.getParameter("restaurantName");
 		Integer ownerId = Integer.parseInt(id);
 
-		Optional<SpecificRestaurantDetails> result = operations.findRestaurant(ownerId, restaurantName);
+		Optional<SpecificRestaurantDetails> result = null;
+		try {
+			result = operations.findRestaurant(ownerId, restaurantName);
+		} catch (Exception e) {
+
+			String searchError = "Restaurant Not Registered";
+
+			model.addAttribute("id", id);
+			return ownerDashboard(ownerId, model, ownerName, searchError);
+		}
 
 		List<SpecificRestaurantDetails> rList = result.stream().collect(Collectors.toList());
 		model.addAttribute("data", rList);
 		model.addAttribute("id", id);
-		return new ModelAndView("ownerDashboard");
+		return ownerDashboard(ownerId, model, ownerName, null);
 
 	}
 
@@ -257,31 +277,21 @@ public class RestaurantControllerImpl implements RestaurantController {
 		List<SpecificRestaurantDetails> rList = result.stream().collect(Collectors.toList());
 		model.addAttribute("data", rList);
 		model.addAttribute("id", id);
-		return new ModelAndView("ownerDashboard");
+		return ownerDashboard(ownerId, model, ownerName, null);
 
 	}
-	
-	
-	@PostMapping(value = "totalEmployeesInResaturants",produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@PostMapping(value = "totalEmployeesInResaturants", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ModelAndView totalEmployeesInResaturants(Model model, HttpServletRequest request) {
 		String id = request.getParameter("id");
 
 		Integer ownerId = Integer.parseInt(id);
 		Integer result = operations.totalEmployees(ownerId);
-	
-		
-		
-	
-		
-	
-	
-	String totalCount = Integer.toString(result);
-	model.addAttribute("id", id);
-	model.addAttribute("count", totalCount);
-	return new ModelAndView("ownerDashboard");
+
+		String totalCount = Integer.toString(result);
+		model.addAttribute("id", id);
+		model.addAttribute("count", totalCount);
+		return ownerDashboard(ownerId, model, ownerName, null);
 	}
-	
-	
-	
 
 }

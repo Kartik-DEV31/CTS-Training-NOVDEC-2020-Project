@@ -27,7 +27,7 @@ public interface RestaurantDetailsManagingOperations {
 
 	void updateEmployeeCount(Integer ownerId, String restaurantName, Integer updatedCount) throws Exception;
 
-	Optional<SpecificRestaurantDetails> findRestaurant(Integer ownerId, String restaurantName);
+	Optional<SpecificRestaurantDetails> findRestaurant(Integer ownerId, String restaurantName) throws Exception;
 
 	List<SpecificRestaurantDetails> findAllRestaurantOfOwner(Integer ownerId);
 

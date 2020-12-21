@@ -24,10 +24,18 @@ public interface RestaurantController {
 
 	ModelAndView Authentication(HttpServletRequest request, Model m);
 
-	ModelAndView updateRevenue(Model model, HttpServletRequest request);
+	ModelAndView updateRevenue(Model model, HttpServletRequest request) throws Exception;
 
-	ModelAndView updateEmployeeCount(Model model, HttpServletRequest request);
+	ModelAndView updateEmployeeCount(Model model, HttpServletRequest request) throws Exception;
 
 	ModelAndView findRestaurant(Model model, HttpServletRequest request);
+
+	ModelAndView ownerDashboard(Integer id, Model model, String ownerName, String Exception);
+
+	ModelAndView home();
+
+	ModelAndView redirectToRegisterOwnerJsp();
+
+	ModelAndView redirectToRegisterRestaurantJsp();
 
 }

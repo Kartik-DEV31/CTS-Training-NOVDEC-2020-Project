@@ -9,10 +9,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import managmentApplication.RestaurantChainManagmentApplication.RestaurantRepository;
-import managmentApplication.RestaurantChainManagmentApplication.SpecificRestaurantRepository;
 import managmentApplication.applicationModel.RestaurantDetails;
 import managmentApplication.applicationModel.SpecificRestaurantDetails;
+import managmentApplication.applicationRepository.RestaurantRepository;
+import managmentApplication.applicationRepository.SpecificRestaurantRepository;
 
 @Service
 public class RestaurantDetailsManagingOperationsImpl implements RestaurantDetailsManagingOperations {
@@ -101,10 +101,12 @@ SpecificRestaurantRepository srepo;
 	@Override
 	public String authenticate(Integer id, String password) throws Exception {
 	
+	String ownerName = 	repo.authenticateTheUser(id , password);
+		
 		if(repo.authenticateTheUser(id , password).isEmpty())
 			throw new Exception("AuthenticationError");
 		else 
-			return "Authenticated";
+			return ownerName;
 		
 	}
 
@@ -126,8 +128,14 @@ SpecificRestaurantRepository srepo;
 	}
 
 	
-	public Optional<SpecificRestaurantDetails> findRestaurant(Integer ownerId, String restaurantName) {
-return srepo.findRestaurantByIdandName(ownerId,restaurantName);
+	public Optional<SpecificRestaurantDetails> findRestaurant(Integer ownerId, String restaurantName) throws Exception {
+
+		Optional<SpecificRestaurantDetails> result =srepo.findRestaurantByIdandName(ownerId,restaurantName);
+		
+		if(result.isEmpty())
+			throw new Exception("NotFoundException");
+		
+		return result;
 	
 	}
 
